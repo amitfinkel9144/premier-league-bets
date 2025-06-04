@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,7 +7,16 @@ import { supabase } from '@/lib/supabaseClient';
 
 export default function LeaderboardPage() {
   const router = useRouter();
-  const [scores, setScores] = useState<any[]>([]);
+  type Score = {
+  user_id: string;
+  username: string;
+  exact_hits: number;
+  direction_hits: number;
+  total_points: number;
+};
+
+  const [scores, setScores] = useState<Score[]>([]);
+
 
   useEffect(() => {
     const fetchScores = async () => {
