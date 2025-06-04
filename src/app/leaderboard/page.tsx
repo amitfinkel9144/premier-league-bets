@@ -1,13 +1,10 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
-export default function LeaderboardPage() {
-  const router = useRouter();
-  type Score = {
+type Score = {
   user_id: string;
   username: string;
   exact_hits: number;
@@ -15,8 +12,9 @@ export default function LeaderboardPage() {
   total_points: number;
 };
 
+export default function LeaderboardPage() {
+  const router = useRouter();
   const [scores, setScores] = useState<Score[]>([]);
-
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -29,12 +27,14 @@ export default function LeaderboardPage() {
         return;
       }
 
-      const { data, error } = await supabase.from('user_scores').select('*');
+      const { data, error } = await supabase
+        .from('user_scores')
+        .select('*');
 
       if (error) {
         console.error('שגיאה בטעינת טבלת ניקוד:', error.message);
-      } else {
-        setScores(data);
+      } else if (data) {
+        setScores(data as Score[]);
       }
     };
 
