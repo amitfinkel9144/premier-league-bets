@@ -5,14 +5,24 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
+type Match = {
+  id: number;
+  matchday: number;
+  match_date: string;
+  home_team: string;
+  away_team: string;
+  actual_home_score: number | null;
+  actual_away_score: number | null;
+};
+
 export default function AdminGamesPage() {
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState<Match[]>([]);
   const [newMatch, setNewMatch] = useState({
     home_team: '',
     away_team: '',
     match_date: '',
   });
-  const [editedScores, setEditedScores] = useState({});
+  const [editedScores, setEditedScores] = useState<Record<number, { home: number; away: number }>>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -45,9 +55,9 @@ export default function AdminGamesPage() {
         .order('match_date', { ascending: true });
 
       if (!error && data) {
-        setMatches(data);
-        const initial = {};
-        data.forEach((m) => {
+        setMatches(data as Match[]);
+        const initial: Record<number, { home: number; away: number }> = {};
+        data.forEach((m: Match) => {
           initial[m.id] = {
             home: m.actual_home_score ?? 0,
             away: m.actual_away_score ?? 0,
@@ -69,7 +79,7 @@ export default function AdminGamesPage() {
     }
   };
 
-  const handleUpdateScore = async (matchId) => {
+  const handleUpdateScore = async (matchId: number) => {
     const scores = editedScores[matchId];
     const { error } = await supabase
       .from('matches')

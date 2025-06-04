@@ -29,7 +29,6 @@ export default function SubmitPage() {
 
       const now = new Date().toISOString();
 
-      // שליפת משחקי המחזור הקרוב
       const { data: upcoming } = await supabase
         .from('matches')
         .select('*')
@@ -42,7 +41,6 @@ export default function SubmitPage() {
       const filtered = upcoming.filter((m) => m.matchday === nextMatchday);
       setMatches(filtered);
 
-      // שליפת הימורים קיימים
       const { data: existingPredictions } = await supabase
         .from('predictions')
         .select('match_id, predicted_home_score, predicted_away_score')
@@ -85,7 +83,7 @@ export default function SubmitPage() {
 
     const { error } = await supabase
       .from('predictions')
-      .upsert(newPredictions, { onConflict: ['user_id', 'match_id'] });
+      .upsert(newPredictions, { onConflict: 'user_id,match_id' });
 
     if (!error) setSubmitted(true);
   };
