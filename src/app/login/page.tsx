@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
-  const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !email.includes('@')) {
