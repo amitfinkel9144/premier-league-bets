@@ -1,4 +1,3 @@
-// src/app/leaderboard/page.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
@@ -7,10 +6,8 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function LeaderboardPage() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [scores, setScores] = useState<any[]>([]);
-
-
 
   useEffect(() => {
     const fetchScores = async () => {
