@@ -27,13 +27,11 @@ export default function LeaderboardPage() {
         return;
       }
 
-      const { data, error } = await supabase
-        .from('user_scores')
-        .select('*');
+      const { data, error } = await supabase.from('user_scores').select('*');
 
       if (error) {
         console.error('שגיאה בטעינת טבלת ניקוד:', error.message);
-      } else if (data) {
+      } else {
         setScores(data as Score[]);
       }
     };
